@@ -45,19 +45,20 @@ LOGFILE='/var/log/glpi/backup.log';
 
 DBUSER=root
 DBPASS=root
-DATE=`date +%Y-%m-%d`;
+DATE=`date +%Y-%m-%d-%H-%m`;
 LOGTIME=`date +"%Y-%m-%d %H:%m"`;
 DBCONFIG=`find $GLPI_DIR -name "config_db.php"`;
 DBNAME=`grep "dbdefault" $DBCONFIG | cut -d "'" -f 2`;
 GLPISIZE=`du -sh $GLPI_DIR`;
+GLPIVERSION='glpi-9.1.6-';
 
 echo "Starting backup..."
 echo "ALERT: This may take several minutes, depending on the size of the backup!";
 echo -e "$LOGTIME \t## New backup started ##" >> $LOGFILE;
 echo -e "$LOGTIME \tCreating mysqldump into $BACKUP_DIR/$DATE.sqldump.sql ..." >> $LOGFILE;
-mysqldump -u $DBUSER -p$DBPASS $DBNAME > $BACKUP_DIR/$DATE.sqldump.sql;
+mysqldump -u $DBUSER -p$DBPASS $DBNAME > $BACKUP_DIR/$GLPIVERSION$DATE.sql.gz;
 echo -e "$LOGTIME \tpacking: $GLPISIZE.. into $BACKUP_DIR/$DATE.backup.tar.bz2 ..." >> $LOGFILE;
-tar -cjPf $BACKUP_DIR/$DATE.backup.tar.bz2 $GLPI_DIR $BACKUP_DIR/$DATE.sqldump.sql >> $LOGFILE;
+tar -cjPf $BACKUP_DIR/$GLPIVERSION$DATE.backup.tar.bz2 $GLPI_DIR $BACKUP_DIR/$GLPIVERSION$DATE.sql.gz >> $LOGFILE;
 
 # Go back to original working directory.
 echo -e "$LOGTIME \tAll done..." >> $LOGFILE;
@@ -66,7 +67,7 @@ echo "Backup done!";
 # Copy dump to GLPI
 echo "Copy dump to GLPI.";
 cd /backup
-cp *.sqldump.sql /var/www/html/glpi/files/_dumps
+cp *.sql.gz /var/www/html/glpi/files/_dumps
 echo "Copy Done!";
 
 # Upload backup Google Drive
