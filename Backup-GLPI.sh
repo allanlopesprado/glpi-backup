@@ -34,8 +34,8 @@ fi
 
 # Deleting old backups
 echo "Deleting backups older than 7 days!";
-find /backup/ -type f -mtime +7 -exec rm -rf {} \;
-find /var/www/html/glpi/files/_dumps/ -type f -mtime +7 -exec rm -rf {} \;
+find /backup -type f -mtime +7 -exec rm -rf {} \;
+find /var/www/html/glpi/files/_dumps -type f -mtime +7 -exec rm -rf {} \;
 echo "Deleting Done!";
 
 # Backup script for GLPI
@@ -50,7 +50,7 @@ LOGTIME=`date +"%Y-%m-%d %H:%m"`;
 DBCONFIG=`find $GLPI_DIR -name "config_db.php"`;
 DBNAME=`grep "dbdefault" $DBCONFIG | cut -d "'" -f 2`;
 GLPISIZE=`du -sh $GLPI_DIR`;
-GLPIVERSION='glpi-9.1.6-';
+GLPIVERSION='glpi-9.2-';
 
 echo "Starting backup..."
 echo "ALERT: This may take several minutes, depending on the size of the backup!";
@@ -67,7 +67,7 @@ echo "Backup done!";
 # Copy dump to GLPI
 echo "Copy dump to GLPI.";
 cd /backup
-cp *.sql.gz /var/www/html/glpi/files/_dumps
+cp -p *.sql.gz /var/www/html/glpi/files/_dumps
 echo "Copy Done!";
 
 # Upload backup Google Drive
