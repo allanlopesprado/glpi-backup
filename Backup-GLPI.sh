@@ -2,7 +2,7 @@
 
 # -------------------------------------------------------------------------
 # @Name: Backup-GLPI.sh
-#	@Version: 1.0.0
+#	@Version: 1.1.0
 #	@Data: 09/15/2017
 #	@Copyright: https://gist.github.com/allanlopesprado
 #	@Copyright: https://gist.github.com/JosefJezek
@@ -43,15 +43,22 @@ GLPI_DIR='/var/www/html/glpi';
 BACKUP_DIR='/backup';
 LOGFILE='/var/log/glpi/backup.log';
 
+# Database credentials
 DBUSER=root
 DBPASS=root
+
+# Checking GLPI version
+var=$(mysql -u$DBUSER -p$DBPASS -D glpi -N -B -e "select value from glpi_configs where name like 'version';")
+
+# Variables
 DATE=`date +%Y-%m-%d-%H-%m`;
 LOGTIME=`date +"%Y-%m-%d %H:%m"`;
 DBCONFIG=`find $GLPI_DIR -name "config_db.php"`;
 DBNAME=`grep "dbdefault" $DBCONFIG | cut -d "'" -f 2`;
 GLPISIZE=`du -sh $GLPI_DIR`;
-GLPIVERSION='glpi-9.2-';
+GLPIVERSION="glpi-${var}-";
 
+# Starting Backup
 echo "Starting backup..."
 echo "ALERT: This may take several minutes, depending on the size of the backup!";
 echo -e "$LOGTIME \t## New backup started ##" >> $LOGFILE;
