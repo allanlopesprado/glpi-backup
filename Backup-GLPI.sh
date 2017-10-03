@@ -3,7 +3,7 @@
 # -------------------------------------------------------------------------
 # @Name: Backup-GLPI.sh
 #	@Version: 1.1.0
-#	@Data: 09/28/2017
+#	@Data: 10/03/2017
 #	@Copyright: https://gist.github.com/allanlopesprado
 #	@Copyright: https://gist.github.com/JosefJezek
 # --------------------------------------------------------------------------
