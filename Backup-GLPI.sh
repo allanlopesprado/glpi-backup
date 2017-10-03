@@ -5,7 +5,6 @@
 #	@Version: 1.1.0
 #	@Data: 10/03/2017
 #	@Copyright: https://gist.github.com/allanlopesprado
-#	@Copyright: https://gist.github.com/JosefJezek
 # --------------------------------------------------------------------------
 # LICENSE
 #
