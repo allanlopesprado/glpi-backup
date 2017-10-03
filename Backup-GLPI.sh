@@ -34,8 +34,8 @@ fi
 
 # Deleting old backups
 echo "Deleting backups older than 7 days!";
-find /backup -type f -mtime +7 -exec rm -rf {} \;
-find /var/www/html/glpi/files/_dumps -type f -mtime +7 -exec rm -rf {} \;
+find /backup -type f -mtime +6 -exec rm -rf {} \;
+find /var/www/html/glpi/files/_dumps -type f -mtime +6 -exec rm -rf {} \;
 echo "Deleting Done!";
 
 # Backup script for GLPI
