@@ -3,7 +3,7 @@ Este script foi desenvolvido para facilitar o backup local do sistema GLPI, assi
 
 É necessario que o script seja criado em local de sua preferencia, no exemplo a pasta utilizada para armazenar o backup sera.
 
-/var/www/html/glpi/scripts, onde é criado o arquivo backup-glpi.sh, e executado a permissão > 'chmod +x backup-glpi.sh'
+/var/www/html/glpi/scripts, onde é criado o arquivo backup-glpi.sh, e executado a permissão > chmod +x backup-glpi.sh
 
 Após a instalação e configuração correta do rclone, você deve identificar a seguinte linha do backup.
 
