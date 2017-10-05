@@ -7,7 +7,7 @@ Este script foi desenvolvido para facilitar o backup local do sistema GLPI, assi
 
 Após a instalação e configuração correta do rclone, você deve identificar a seguinte linha do backup.
 
-/usr/sbin/rclone sync /backup GoogleDrive:BackupGLPI >> $LOGFILE;
+- /usr/sbin/rclone sync /backup GoogleDrive:BackupGLPI >> $LOGFILE;
 
 Onde deve alterar as seguintes informações.
 
@@ -15,7 +15,7 @@ Drive:RemoteFolder, no caso o driver criado foi GoogleDrive e pasta remota foi B
 
 Apos isto é necessario inserir a seguinte linha no crontab, usando o comando > crontab -e
 
-# Backup GLPI
+#Backup GLPI
 58 23 * * * root /var/www/html/glpi/scripts/backup-glpi.sh
 
 Onde o backup sera executado todos os dias as 23:58. 
