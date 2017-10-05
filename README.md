@@ -13,9 +13,8 @@ Drive:RemoteFolder, no caso o driver criado foi GoogleDrive e pasta remota foi B
 
 Apos isto é necessario inserir a seguinte linha no crontab, usando o comando > crontab -e
 
--# Backup GLPI
-
--58 23 * * * root /var/www/html/glpi/scripts/backup-glpi.sh
+#Backup GLPI
+58 23 * * * root /var/www/html/glpi/scripts/backup-glpi.sh
 
 Onde o backup sera executado todos os dias as 23:58. 
 
