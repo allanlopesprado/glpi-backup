@@ -2,8 +2,8 @@
 
 # -------------------------------------------------------------------------
 # @Name: Backup-GLPI.sh
-#	@Version: 1.1.0
-#	@Data: 10/03/2017
+#	@Version: 1.2.0
+#	@Data: 12/12/2017
 #	@Copyright: https://gist.github.com/allanlopesprado
 # --------------------------------------------------------------------------
 # LICENSE
@@ -33,8 +33,8 @@ fi
 
 # Deleting old backups
 echo "Deleting backups older than 7 days!";
-find /backup -type f -mtime +6 -exec rm -rf {} \;
-find /var/www/html/glpi/files/_dumps -type f -mtime +6 -exec rm -rf {} \;
+find /backup -type f -mtime +5 -exec rm -rf {} \;
+find /var/www/html/glpi/files/_dumps -type f -mtime +5 -exec rm -rf {} \;
 echo "Deleting Done!";
 
 # Backup script for GLPI
