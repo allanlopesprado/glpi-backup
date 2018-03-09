@@ -2,8 +2,8 @@
 
 # -------------------------------------------------------------------------
 # @Name: Backup-GLPI.sh
-#	@Version: 1.2.0
-#	@Data: 12/12/2017
+#	@Version: 1.2.1
+#	@Data: 09/03/2018
 #	@Copyright: https://gist.github.com/allanlopesprado
 # --------------------------------------------------------------------------
 # LICENSE
@@ -40,7 +40,7 @@ echo "Deleting Done!";
 # Backup script for GLPI
 GLPI_DIR='/var/www/html/glpi';
 BACKUP_DIR='/backup';
-LOGFILE='/var/log/glpi/backup.log';
+LOGFILE='/var/www/html/glpi/files/_log/backup.log';
 
 # Database credentials
 DBUSER=root
