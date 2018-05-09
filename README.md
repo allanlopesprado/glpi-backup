@@ -3,7 +3,7 @@ Este script foi desenvolvido para facilitar o backup local do sistema GLPI, assi
 
 É necessario que o script seja criado em local de sua preferencia, no exemplo a pasta utilizada para armazenar o script de backup foi, /var/www/html/glpi/scripts, onde é foi criado o arquivo backup-glpi.sh, e executado a permissão > chmod +x backup-glpi.sh
 
-Após a instalação e configuração correta do rclone, você deve identificar a seguinte linha do backup.
+Após a instalação e configuração correta do rclone, você deve inserir a seguinte linha no arquivo de backup.
 
 - /usr/sbin/rclone sync /backup GoogleDrive:BackupGLPI >> $LOGFILE;
 
@@ -15,8 +15,8 @@ Apos isto é necessario inserir a seguinte linha no crontab, usando o comando > 
 
 #Backup GLPI
 
-58 23 * * * root /var/www/html/glpi/scripts/backup-glpi.sh
+0 0 * * * /var/www/html/glpi/scripts/backup-glpi.sh
 
-Onde o backup sera executado todos os dias as 23:58. 
+Onde o backup será executado todos os dias as 00:00. 
 
 
