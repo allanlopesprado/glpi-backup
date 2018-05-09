@@ -2,8 +2,8 @@
 
 # -------------------------------------------------------------------------
 # @Name: Backup-GLPI.sh
-#	@Version: 1.2.1
-#	@Data: 09/03/2018
+#	@Version: 1.3.0
+#	@Data: 26/03/2018
 #	@Copyright: https://gist.github.com/allanlopesprado
 # --------------------------------------------------------------------------
 # LICENSE
@@ -21,65 +21,33 @@
 # If not, see <http://www.gnu.org/licenses/>.
 # --------------------------------------------------------------------------
 
-# Check directory
-echo "Check directory, if it does not exist it will be created!"
-if [ -e "/backup" ]
-then
-echo "Directory already exists.";
-else
-echo "Directory does not exist, creating directory."
-mkdir /backup
-fi
+# AUTOMATIC BACKUP FOR GLPI
 
-# Deleting old backups
-echo "Deleting backups older than 7 days!";
-find /backup -type f -mtime +5 -exec rm -rf {} \;
-find /var/www/html/glpi/files/_dumps -type f -mtime +5 -exec rm -rf {} \;
-echo "Deleting Done!";
+# VARIABLES GLPI
+GLPI_DIR="/var/www/html/glpi";
+GLPI_DUMPS="$GLPI_DIR/files/_dumps";
+GLPI_LOGFILE="$GLPI_DIR/files/_log/backup.log";
+GLPI_DBCONFIG=`find $GLPI_DIR/config -name "config_db.php"`;
 
-# Backup script for GLPI
-GLPI_DIR='/var/www/html/glpi';
-BACKUP_DIR='/backup';
-LOGFILE='/var/www/html/glpi/files/_log/backup.log';
+# CREDENTIALS DATABASE
+GLPI_DBUSER=`grep "dbuser" $GLPI_DBCONFIG | cut -d "'" -f 2`;
+GLPI_DBPASS=`grep "dbpassword" $GLPI_DBCONFIG | cut -d "'" -f2`;
 
-# Database credentials
-DBUSER=root
-DBPASS=root
+# GLPI VERSION
+var=$(mysql -u$GLPI_DBUSER -p$GLPI_DBPASS -D glpi -N -B -e "select value from glpi_configs where name like 'version';")
 
-# Checking GLPI version
-var=$(mysql -u$DBUSER -p$DBPASS -D glpi -N -B -e "select value from glpi_configs where name like 'version';")
-
-# Variables
-DATE=`date +%Y-%m-%d-%H-%m`;
-LOGTIME=`date +"%Y-%m-%d %H:%m"`;
-DBCONFIG=`find $GLPI_DIR -name "config_db.php"`;
-DBNAME=`grep "dbdefault" $DBCONFIG | cut -d "'" -f 2`;
-GLPISIZE=`du -sh $GLPI_DIR`;
-GLPIVERSION="glpi-${var}-";
-
-# Starting Backup
+# VARIABLES BACKUP
+GLPI_DATE=`date +%Y-%m-%d-%H-%m`;
+GLPI_DBNAME=`grep "dbdefault" $GLPI_DBCONFIG | cut -d "'" -f 2`;
+GLPI_VERSION="glpi-${var}-";
 echo "Starting backup..."
-echo "ALERT: This may take several minutes, depending on the size of the backup!";
-echo -e "$LOGTIME \t## New backup started ##" >> $LOGFILE;
-echo -e "$LOGTIME \tCreating mysqldump into $BACKUP_DIR/$DATE.sqldump.sql ..." >> $LOGFILE;
-mysqldump -u $DBUSER -p$DBPASS $DBNAME > $BACKUP_DIR/$GLPIVERSION$DATE.sql.gz;
-echo -e "$LOGTIME \tpacking: $GLPISIZE.. into $BACKUP_DIR/$DATE.backup.tar.bz2 ..." >> $LOGFILE;
-tar -cjPf $BACKUP_DIR/$GLPIVERSION$DATE.backup.tar.bz2 $GLPI_DIR $BACKUP_DIR/$GLPIVERSION$DATE.sql.gz >> $LOGFILE;
+echo -e "$GLPI_DATE \tCreating mysqldump into $GLPI_DUMPS/$GLPI_DATE.sqldump.sql ..." >> $GLPI_LOGFILE;
+mysqldump -u $GLPI_DBUSER -p$GLPI_DBPASS $GLPI_DBNAME > $GLPI_DUMPS/$GLPI_VERSION$GLPI_DATE.sql.gz;
+cd $GLPI_DIR 
+tar --exclude='files/_dumps/*' --exclude='files/_uploads/*' -zcf $GLPI_DIR/files/_uploads/$GLPI_VERSION$GLPI_DATE.files.tar.gz files/;
 
-# Go back to original working directory.
-echo -e "$LOGTIME \tAll done..." >> $LOGFILE;
-echo "Backup done!";
-
-# Copy dump to GLPI
-echo "Copy dump to GLPI.";
-cd /backup
-cp -p *.sql.gz /var/www/html/glpi/files/_dumps
-echo "Copy Done!";
-
-# Upload backup Google Drive
-echo "Upload backup Google Drive.";
-echo "ALERT: This may take several minutes, depending on your upload speed!";
-/usr/sbin/rclone sync /backup GoogleDrive:BackupGLPI >> $LOGFILE;
-echo "Upload Done!";
-
+# DELETE THE OLD BACKUPS
+find $GLPI_DUMPS -type f -mtime +5 -exec rm -rf {} \;
+find $GLPI_DIR/files/_uploads -type f -mtime +5 -exec rm -rf {} \;
+echo "Backup Done!";
 exit 0;
