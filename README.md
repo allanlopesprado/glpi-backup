@@ -40,7 +40,7 @@ Clone o repositório em seu servidor com o comando:
 
 ```bash
 git clone https://github.com/allanlopesprado/backup-glpi.git
-cd Backup-GLPI
+cd backup-glpi
 ```
 
 ### 2. Crie o Arquivo de Configuração
