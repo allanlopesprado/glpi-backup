@@ -10,7 +10,29 @@ Antes de usar o script de backup, certifique-se de que você possui o seguinte:
 
 - **Instalação do GLPI**: O GLPI deve estar instalado e configurado corretamente no seu servidor.
 - **MySQL/MariaDB**: Um sistema de banco de dados compatível com o GLPI.
-- **Acesso Root**: Você precisa de acesso root ou sudo para executar o script e gerenciar arquivos.
+- **Acesso Root**: Você precisa de acesso root ou sudo para configurar o sistema.
+
+## Criação de Usuário para Backup
+
+Para maior segurança, **não execute o script como root**. Em vez disso, crie um usuário dedicado para executar os backups. 
+
+### 1. Crie um novo usuário (substitua `backupuser` pelo nome desejado):
+
+```bash
+sudo adduser backupuser
+```
+
+### 2. Conceda permissões ao novo usuário para acessar os diretórios necessários:
+
+```bash
+sudo chown -R backupuser:backupuser /var/www/glpi /etc/glpi /var/lib/glpi /var/log/glpi
+```
+
+### 3. Adicione o usuário ao grupo sudo para permitir a execução de comandos necessários:
+
+```bash
+sudo usermod -aG sudo backupuser
+```
 
 ## Configuração
 
@@ -19,8 +41,8 @@ Antes de usar o script de backup, certifique-se de que você possui o seguinte:
 Clone o repositório em seu servidor com o comando:
 
 ```bash
-git clone https://github.com/seuusuario/seurepositorio.git
-cd seurepositorio
+git clone https://github.com/allanlopesprado/backup-glpi.git
+cd Backup-GLPI
 ```
 
 ### 2. Crie o Arquivo de Configuração
@@ -39,20 +61,26 @@ sudo nano /etc/backup-glpi.conf
 
 **Ajuste as configurações conforme necessário:**
 
-- **Diretórios**
-  - **GLPI_DIR="/var/www/glpi"**
-  - **GLPI_CONFIG_DIR="/etc/glpi"**
-  - **GLPI_DATA_DIR="/var/lib/glpi"**
-  - **GLPI_LOG_DIR="/var/log/glpi"**
+**Diretórios**
+```bash
+GLPI_DIR="/var/www/glpi"
+GLPI_CONFIG_DIR="/etc/glpi"
+GLPI_DATA_DIR="/var/lib/glpi"
+GLPI_LOG_DIR="/var/log/glpi"
+```
 
-- **Banco de Dados**
-  - **DB_HOST="localhost"**
-  - **DB_NAME="glpi"**
-  - **DB_USER="seuusuario"**
-  - **DB_PASS="suasenha"**
+**Banco de Dados**
+```bash
+DB_HOST="localhost"
+DB_NAME="glpi"
+DB_USER="seuusuario"
+DB_PASS="suasenha"
+```
 
-- **Backup**
-  - **BACKUP_RETENTION_DAYS=5**
+**Backup**
+```bash
+BACKUP_RETENTION_DAYS=5
+```
 
 
 Certifique-se de que todos os caminhos e credenciais estão corretos e correspondem à sua configuração do GLPI.
