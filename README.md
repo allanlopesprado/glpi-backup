@@ -1,6 +1,4 @@
-# Script de Backup para GLPI
-
-## Visão Geral
+## Script de Backup para GLPI
 
 Este repositório contém um script para realizar backups automatizados do GLPI (Gestor Livre de Parque Informático). O script foi projetado para criar backups do banco de dados e dos arquivos do GLPI, garantindo que seus dados estejam seguros e possam ser restaurados se necessário.
 
@@ -59,9 +57,10 @@ Abra o arquivo de configuração para edição com o comando:
 sudo nano /etc/backup-glpi.conf
 ```
 
-**Ajuste as configurações conforme necessário:**
+### 4. Ajuste as configurações conforme necessário
 
-**Diretórios**
+
+Diretórios
 ```bash
 GLPI_DIR="/var/www/glpi"
 GLPI_CONFIG_DIR="/etc/glpi"
@@ -69,19 +68,17 @@ GLPI_DATA_DIR="/var/lib/glpi"
 GLPI_LOG_DIR="/var/log/glpi"
 ```
 
-**Banco de Dados**
+Banco de Dados
 ```bash
 DB_HOST="localhost"
 DB_NAME="glpi"
 DB_USER="seuusuario"
 DB_PASS="suasenha"
 ```
-
-**Backup**
+Backup
 ```bash
 BACKUP_RETENTION_DAYS=5
 ```
-
 
 Certifique-se de que todos os caminhos e credenciais estão corretos e correspondem à sua configuração do GLPI.
 
@@ -99,7 +96,6 @@ sudo chmod +x backup-glpi.sh
 Certifique-se de que o arquivo de configuração seja legível apenas pelo usuário root e pelo script com o comando:
 
 ```bash
-Copiar código
 sudo chmod 640 /etc/backup-glpi.conf
 ```
 
