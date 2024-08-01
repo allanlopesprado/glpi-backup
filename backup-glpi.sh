@@ -32,8 +32,8 @@ check_prerequisites() {
         exit 1
     fi
 
-    if [ "$(id -u)" -ne 0 ]; then
-        log_message "Error: Script must be run as root."
+    if [ "$(id -u)" -eq 0 ]; then
+        log_message "Error: Script should not be run as root. Please use a dedicated backup user."
         exit 1
     fi
 }
@@ -62,3 +62,30 @@ perform_backup() {
     local backup_date=$(date +%Y-%m-%d-%H-%M)
     local backup_file_sql="$GLPI_DATA_DIR/glpi-${GLPI_VERSION}-${backup_date}.sql.gz"
     local backup_file_tar="$GLPI_DATA_DIR/glpi-${GLPI_VERSION}-${backup_date}.files.tar.gz"
+
+    log_message "Creating database dump: $backup_file_sql"
+    mysqldump -u "$DB_USER" -p"$DB_PASS" "$DB_NAME" | gzip > "$backup_file_sql"
+
+    log_message "Creating file backup: $backup_file_tar"
+    tar --exclude='files/_dumps/*' --exclude='files/_uploads/*' -zcf "$backup_file_tar" -C "$GLPI_DIR" files/
+
+    log_message "Backup completed successfully."
+}
+
+cleanup_old_backups() {
+    find "$GLPI_DATA_DIR" -type f -name "*.sql.gz" -mtime +$BACKUP_RETENTION_DAYS -exec rm -f {} \;
+    find "$GLPI_DATA_DIR" -type f -name "*.tar.gz" -mtime +$BACKUP_RETENTION_DAYS -exec rm -f {} \;
+}
+
+# Main Script
+trap 'error_handler $LINENO' ERR
+
+log_message "Starting backup process."
+
+check_prerequisites
+extract_db_credentials
+get_glpi_version
+perform_backup
+cleanup_old_backups
+
+log_message "Backup process completed successfully."
