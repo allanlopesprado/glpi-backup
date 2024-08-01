@@ -103,8 +103,8 @@ sudo chmod 640 /etc/backup-glpi.conf
 Certifique-se de que o diretório de backup tenha as permissões corretas para que o script possa escrever com os seguintes comandos:
 
 ```bash
-sudo chown root:root /caminho/para/seu/diretorio/de/backup
-sudo chmod 750 /caminho/para/seu/diretorio/de/backup
+sudo chown backupuser:backupuser /var/backups/glpi
+sudo chmod 750 /var/backups/glpi
 ```
 ## Executar o Script Manualmente
 
@@ -127,7 +127,7 @@ sudo crontab -e
 Adicione a seguinte linha para executar o script diariamente às 2 AM:
 
 ```bash
-0 2 * * * /caminho/para/seu/backup-glpi.sh
+0 2 * * * /var/backups/glpi/backup-glpi.sh
 ```
 
 Isso garante que o backup seja realizado automaticamente todos os dias.
