@@ -82,9 +82,7 @@ Certifique-se de que o diretório de backup tenha as permissões corretas para q
 sudo chown root:root /caminho/para/seu/diretorio/de/backup
 sudo chmod 750 /caminho/para/seu/diretorio/de/backup
 ```
-
-## Uso
-**Executar o Script Manualmente**
+## Executar o Script Manualmente
 
 Para executar o script manualmente, use o comando:
 
@@ -94,7 +92,7 @@ sudo ./backup-glpi.sh
 
 O script criará um backup do banco de dados e dos arquivos do GLPI. O progresso e os resultados serão registrados em **/var/log/glpi/backup.log**
 
-**Agendar Backups Automáticos**
+## Agendar Backups Automáticos
 
 Para agendar o script para ser executado automaticamente, utilize o cron. Abra o crontab para edição com o comando:
 
@@ -110,23 +108,23 @@ Adicione a seguinte linha para executar o script diariamente às 2 AM:
 
 Isso garante que o backup seja realizado automaticamente todos os dias.
 
-**Detalhes do Script**
+## Detalhes do Script
 - **Criação de Backup:** O script cria um dump do banco de dados GLPI e o comprime. Também arquiva os arquivos do GLPI, excluindo os diretórios de backup e upload para evitar duplicidade.
 - **Arquivo de Log:** As operações do script são registradas em **/var/log/glpi/backup.log**. Verifique este arquivo para monitorar o status dos backups e para depuração em caso de problemas.
 - **Tratamento de Erros:** Se qualquer operação falhar, o script sairá e registrará um erro no log. Isso inclui a falha na criação de backups, problemas com permissões e falhas na configuração.
 
-**Solução de Problemas**
-Se você encontrar problemas ao usar o script, verifique o seguinte:
+## Solução de Problemas
 
+Se você encontrar problemas ao usar o script, verifique o seguinte:
 - **Permissões:** Certifique-se de que o script e os diretórios de backup têm as permissões corretas.
 - **Credenciais do Banco de Dados:** Verifique se as credenciais do banco de dados estão corretas no arquivo de configuração.
 - **Espaço em Disco:** Garanta que há espaço suficiente em disco para armazenar os backups.
 - **Logs:** Consulte o arquivo de log **/var/log/glpi/backup.log** para detalhes sobre quaisquer erros ou problemas encontrados.
 
-**Licença**
+## Licença
 
 Este script está licenciado sob a Licença Pública Geral GNU v3.0. Veja o arquivo **LICENSE** para mais detalhes.
 
-**Contato**
+## Contato
 Para quaisquer problemas ou perguntas, por favor, abra uma issue em GitHub Issues ou entre em contato por e-mail: allanlopesprado@hotmail.com
 
