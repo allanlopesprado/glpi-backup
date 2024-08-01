@@ -1,22 +1,132 @@
-# Backup-GLPI
-Este script foi desenvolvido para facilitar o backup local do sistema GLPI, assim como possibilitar uma copia segura na nuvem, para isso o sistema usa ferramenta https://rclone.org/, que deve ser instalada previamente em seu SO.
+# Script de Backup para GLPI
 
-É necessario que o script seja criado em local de sua preferencia, no exemplo a pasta utilizada para armazenar o script de backup foi, /var/www/html/glpi/scripts, onde é foi criado o arquivo backup-glpi.sh, e executado a permissão > chmod +x backup-glpi.sh
+## Visão Geral
 
-Após a instalação e configuração correta do rclone, você deve inserir a seguinte linha no arquivo de backup.
+Este repositório contém um script para realizar backups automatizados do GLPI (Gestor Livre de Parque Informático). O script foi projetado para criar backups do banco de dados e dos arquivos do GLPI, garantindo que seus dados estejam seguros e possam ser restaurados se necessário.
 
-- /usr/sbin/rclone sync /backup GoogleDrive:BackupGLPI >> $LOGFILE;
+## Pré-requisitos
 
-Onde deve alterar as seguintes informações.
+Antes de usar o script de backup, certifique-se de que você possui o seguinte:
 
-Drive:RemoteFolder, no caso o driver criado foi GoogleDrive e pasta remota foi BackupGLPI.
+- **Instalação do GLPI**: O GLPI deve estar instalado e configurado corretamente no seu servidor.
+- **MySQL/MariaDB**: Um sistema de banco de dados compatível com o GLPI.
+- **Acesso Root**: Você precisa de acesso root ou sudo para executar o script e gerenciar arquivos.
 
-Apos isto é necessario inserir a seguinte linha no crontab, usando o comando > crontab -e
+## Configuração
 
-#Backup GLPI
+### 1. Clone o Repositório
 
-0 0 * * * /var/www/html/glpi/scripts/backup-glpi.sh
+Clone o repositório em seu servidor com o comando:
 
-Onde o backup será executado todos os dias as 00:00. 
+```bash
+git clone https://github.com/seuusuario/seurepositorio.git
+cd seurepositorio
+```
 
+### 2. Crie o Arquivo de Configuração
+Copie o arquivo de configuração de exemplo para o diretório apropriado com o comando:
+
+```bash
+sudo cp backup-glpi.conf.example /etc/backup-glpi.conf
+```
+
+### 3. Edite o Arquivo de Configuração
+Abra o arquivo de configuração para edição com o comando:
+
+```bash
+sudo nano /etc/backup-glpi.conf
+```
+
+**Ajuste as configurações conforme necessário:**
+
+- **Diretórios**
+  - **GLPI_DIR="/var/www/glpi"**
+  - **GLPI_CONFIG_DIR="/etc/glpi"**
+  - **GLPI_DATA_DIR="/var/lib/glpi"**
+  - **GLPI_LOG_DIR="/var/log/glpi"**
+
+- **Banco de Dados**
+  - **DB_HOST="localhost"**
+  - **DB_NAME="glpi"**
+  - **DB_USER="seuusuario"**
+  - **DB_PASS="suasenha"**
+
+- **Backup**
+  - **BACKUP_RETENTION_DAYS=5**
+
+
+Certifique-se de que todos os caminhos e credenciais estão corretos e correspondem à sua configuração do GLPI.
+
+## Permissões
+Certifique-se de que o script e os arquivos de configuração tenham as permissões corretas:
+
+### 1. Defina Permissões no Script
+Conceda permissões de execução ao script com o comando:
+
+```bash
+sudo chmod +x backup-glpi.sh
+```
+
+### 2. Defina Permissões no Arquivo de Configuração
+Certifique-se de que o arquivo de configuração seja legível apenas pelo usuário root e pelo script com o comando:
+
+```bash
+Copiar código
+sudo chmod 640 /etc/backup-glpi.conf
+```
+
+### 3. Configure Permissões de Diretórios
+Certifique-se de que o diretório de backup tenha as permissões corretas para que o script possa escrever com os seguintes comandos:
+
+```bash
+sudo chown root:root /caminho/para/seu/diretorio/de/backup
+sudo chmod 750 /caminho/para/seu/diretorio/de/backup
+```
+
+## Uso
+**Executar o Script Manualmente**
+
+Para executar o script manualmente, use o comando:
+
+```bash
+sudo ./backup-glpi.sh
+```
+
+O script criará um backup do banco de dados e dos arquivos do GLPI. O progresso e os resultados serão registrados em **/var/log/glpi/backup.log**
+
+**Agendar Backups Automáticos**
+
+Para agendar o script para ser executado automaticamente, utilize o cron. Abra o crontab para edição com o comando:
+
+```bash
+sudo crontab -e
+```
+
+Adicione a seguinte linha para executar o script diariamente às 2 AM:
+
+```bash
+0 2 * * * /caminho/para/seu/backup-glpi.sh
+```
+
+Isso garante que o backup seja realizado automaticamente todos os dias.
+
+**Detalhes do Script**
+- **Criação de Backup:** O script cria um dump do banco de dados GLPI e o comprime. Também arquiva os arquivos do GLPI, excluindo os diretórios de backup e upload para evitar duplicidade.
+- **Arquivo de Log:** As operações do script são registradas em **/var/log/glpi/backup.log**. Verifique este arquivo para monitorar o status dos backups e para depuração em caso de problemas.
+- **Tratamento de Erros:** Se qualquer operação falhar, o script sairá e registrará um erro no log. Isso inclui a falha na criação de backups, problemas com permissões e falhas na configuração.
+
+**Solução de Problemas**
+Se você encontrar problemas ao usar o script, verifique o seguinte:
+
+- **Permissões:** Certifique-se de que o script e os diretórios de backup têm as permissões corretas.
+- **Credenciais do Banco de Dados:** Verifique se as credenciais do banco de dados estão corretas no arquivo de configuração.
+- **Espaço em Disco:** Garanta que há espaço suficiente em disco para armazenar os backups.
+- **Logs:** Consulte o arquivo de log **/var/log/glpi/backup.log** para detalhes sobre quaisquer erros ou problemas encontrados.
+
+**Licença**
+
+Este script está licenciado sob a Licença Pública Geral GNU v3.0. Veja o arquivo **LICENSE** para mais detalhes.
+
+**Contato**
+Para quaisquer problemas ou perguntas, por favor, abra uma issue em GitHub Issues ou entre em contato por e-mail: allanlopesprado@hotmail.com
 
