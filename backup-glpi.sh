@@ -1,5 +1,4 @@
 #!/bin/bash
-set -euo pipefail
 
 # -------------------------------------------------------------------------
 # @Name: Backup-GLPI.sh
@@ -9,83 +8,62 @@ set -euo pipefail
 # @License: GNU General Public License v3.0
 # @Description: This script performs automatic backups for GLPI.
 # --------------------------------------------------------------------------
+# LICENSE
+#
+# backup-glpi.sh is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
+#
+# backup-glpi.sh is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# If not, see <http://www.gnu.org/licenses/>.
+# --------------------------------------------------------------------------
 
-# Load configuration
-source "/etc/backup-glpi.conf"
+# AUTOMATIC BACKUP FOR GLPI
 
-# Functions
-log_message() {
-    local message="$1"
-    echo "$(date '+%Y-%m-%d %H:%M:%S') - $message" | tee -a "$GLPI_LOG_DIR/backup.log"
-}
+# VARIABLES
+GLPI_DIR="/var/www/glpi"
+GLPI_CONFIG_DIR="/etc/glpi"
+GLPI_DATA_DIR="/var/lib/glpi"
+GLPI_LOG_DIR="/var/log/glpi"
+GLPI_DUMPS="$GLPI_DATA_DIR/_dumps"
+GLPI_LOGFILE="$GLPI_LOG_DIR/backup.log"
+GLPI_DBCONFIG="$GLPI_CONFIG_DIR/config_db.php"
 
-error_handler() {
-    local exit_code=$?
-    local line_number=$1
-    log_message "Script error at line $line_number. Exit code: $exit_code"
-    exit $exit_code
-}
+# Ensure GLPI directories exist
+mkdir -p $GLPI_DUMPS
+mkdir -p $GLPI_LOG_DIR
 
-check_prerequisites() {
-    if [ ! -d "$GLPI_DIR" ] || [ ! -d "$GLPI_DATA_DIR" ] || [ ! -f "$GLPI_CONFIG_DIR/config_db.php" ]; then
-        log_message "Error: GLPI directory or configuration file not found."
-        exit 1
-    fi
+# CREDENTIALS DATABASE
+GLPI_DBUSER=$(grep "dbuser" $GLPI_DBCONFIG | cut -d "'" -f 2)
+GLPI_DBPASS=$(grep "dbpassword" $GLPI_DBCONFIG | cut -d "'" -f 2)
 
-    if [ "$(id -u)" -eq 0 ]; then
-        log_message "Error: Script should not be run as root. Please use a dedicated backup user."
-        exit 1
-    fi
-}
+# GLPI VERSION
+GLPI_VERSION=$(mysql -u$GLPI_DBUSER -p$GLPI_DBPASS -D glpi -N -B -e "SELECT value FROM glpi_configs WHERE name = 'version';")
 
-extract_db_credentials() {
-    DB_USER=$(grep "dbuser" "$GLPI_CONFIG_DIR/config_db.php" | cut -d "'" -f 2)
-    DB_PASS=$(grep "dbpassword" "$GLPI_CONFIG_DIR/config_db.php" | cut -d "'" -f 2)
-    DB_NAME=$(grep "dbdefault" "$GLPI_CONFIG_DIR/config_db.php" | cut -d "'" -f 2)
+# VARIABLES BACKUP
+GLPI_DATE=$(date +%Y-%m-%d-%H-%M)
+GLPI_DBNAME=$(grep "dbdefault" $GLPI_DBCONFIG | cut -d "'" -f 2)
+GLPI_BACKUP_NAME="glpi-${GLPI_VERSION}-${GLPI_DATE}"
 
-    if [ -z "$DB_USER" ] || [ -z "$DB_PASS" ] || [ -z "$DB_NAME" ]; then
-        log_message "Error: Could not retrieve database credentials."
-        exit 1
-    fi
-}
+# Start backup process
+echo "Starting backup..."
+echo -e "$GLPI_DATE \tCreating mysqldump into $GLPI_DUMPS/${GLPI_BACKUP_NAME}.sql.gz ..." >> $GLPI_LOGFILE
 
-get_glpi_version() {
-    GLPI_VERSION=$(mysql -u"$DB_USER" -p"$DB_PASS" -D "$DB_NAME" -N -B -e "SELECT value FROM glpi_configs WHERE name = 'version';")
+# Backup database
+mysqldump -u $GLPI_DBUSER -p$GLPI_DBPASS $GLPI_DBNAME | gzip > $GLPI_DUMPS/${GLPI_BACKUP_NAME}.sql.gz
 
-    if [ -z "$GLPI_VERSION" ]; then
-        log_message "Error: Could not retrieve GLPI version."
-        exit 1
-    fi
-}
+# Backup files excluding certain directories
+cd $GLPI_DIR
+tar --exclude='files/_dumps/*' --exclude='files/_uploads/*' -zcf $GLPI_DATA_DIR/_uploads/${GLPI_BACKUP_NAME}.files.tar.gz files/
 
-perform_backup() {
-    local backup_date=$(date +%Y-%m-%d-%H-%M)
-    local backup_file_sql="$GLPI_DATA_DIR/glpi-${GLPI_VERSION}-${backup_date}.sql.gz"
-    local backup_file_tar="$GLPI_DATA_DIR/glpi-${GLPI_VERSION}-${backup_date}.files.tar.gz"
+# Remove old backups
+find $GLPI_DUMPS -type f -mtime +5 -exec rm -rf {} \;
+find $GLPI_DATA_DIR/_uploads -type f -mtime +5 -exec rm -rf {} \;
 
-    log_message "Creating database dump: $backup_file_sql"
-    mysqldump -u "$DB_USER" -p"$DB_PASS" "$DB_NAME" | gzip > "$backup_file_sql"
-
-    log_message "Creating file backup: $backup_file_tar"
-    tar --exclude='files/_dumps/*' --exclude='files/_uploads/*' -zcf "$backup_file_tar" -C "$GLPI_DIR" files/
-
-    log_message "Backup completed successfully."
-}
-
-cleanup_old_backups() {
-    find "$GLPI_DATA_DIR" -type f -name "*.sql.gz" -mtime +$BACKUP_RETENTION_DAYS -exec rm -f {} \;
-    find "$GLPI_DATA_DIR" -type f -name "*.tar.gz" -mtime +$BACKUP_RETENTION_DAYS -exec rm -f {} \;
-}
-
-# Main Script
-trap 'error_handler $LINENO' ERR
-
-log_message "Starting backup process."
-
-check_prerequisites
-extract_db_credentials
-get_glpi_version
-perform_backup
-cleanup_old_backups
-
-log_message "Backup process completed successfully."
+echo "Backup completed successfully!"
+exit 0
