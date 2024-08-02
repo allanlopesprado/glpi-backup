@@ -5,14 +5,14 @@
 # @Version: 2.2.0
 # @Date: 2024-08-01
 # @Author: Allan Lopes Prado
-# @License: GNU General Public License v3.0
+# @License: GNU General Public License v2.0
 # @Description: This script performs automatic backups for GLPI.
 # --------------------------------------------------------------------------
 # LICENSE
 #
 # backup-glpi.sh is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 3 of the License, or
+# the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 #
 # backup-glpi.sh is distributed in the hope that it will be useful,
