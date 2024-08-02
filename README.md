@@ -1,66 +1,65 @@
-## Script de Backup para GLPI
+## Backup Script for GLPI
 
-Este repositório contém um script para realizar backups automatizados do GLPI (Gestor Livre de Parque Informático). O script foi projetado para criar backups do banco de dados e dos arquivos do GLPI, garantindo que seus dados estejam seguros e possam ser restaurados se necessário.
+This repository contains a script for automating backups of GLPI (Free IT Asset Management). The script is designed to create backups of both the GLPI database and files, ensuring that your data is secure and can be restored if necessary.
 
-## Pré-requisitos
+## Prerequisites
 
-Antes de usar o script de backup, certifique-se de que você possui o seguinte:
+Before using the backup script, ensure you have the following:
 
-- **Instalação do GLPI**: O GLPI deve estar instalado e configurado corretamente no seu servidor.
-- **MySQL/MariaDB**: Um sistema de banco de dados compatível com o GLPI.
-- **Acesso Root**: Você precisa de acesso root ou sudo para configurar o sistema.
+- **GLPI Installation**: GLPI must be properly installed and configured on your server.
+- **MySQL/MariaDB**: A database system compatible with GLPI.
+- **Root Access**: You need root or sudo access to set up the system.
 
-## Criação de Usuário para Backup
+## Creating a Backup User
 
-Para maior segurança, **não execute o script como root**. Em vez disso, crie um usuário dedicado para executar os backups. 
+For added security, **do not run the script as root**. Instead, create a dedicated user to perform the backups.
 
-### 1. Crie um novo usuário (substitua `backupuser` pelo nome desejado):
+### 1. Create a new user (replace `backupuser` with your desired name):
 
 ```bash
 sudo adduser backupuser
 ```
 
-### 2. Conceda permissões ao novo usuário para acessar os diretórios necessários:
+### 2. Grant permissions to the new user to access the necessary directories:
 
 ```bash
 sudo chown -R backupuser:backupuser /var/www/glpi /etc/glpi /var/lib/glpi /var/log/glpi
 ```
 
-### 3. Adicione o usuário ao grupo sudo para permitir a execução de comandos necessários:
+### 3. Add the user to the sudo group to allow the execution of necessary commands:
 
 ```bash
 sudo usermod -aG sudo backupuser
 ```
 
-## Configuração
+## Configuration
 
-### 1. Clone o Repositório
+### 1. Clone the Repository
 
-Clone o repositório em seu servidor com o comando:
+Clone the repository to your server with the command:
 
 ```bash
 git clone https://github.com/allanlopesprado/backup-glpi.git
 cd backup-glpi
 ```
 
-### 2. Crie o Arquivo de Configuração
-Copie o arquivo de configuração de exemplo para o diretório apropriado com o comando:
+### 2. Create the Configuration File
+Copy the example configuration file to the appropriate directory with the command:
 
 ```bash
 sudo cp backup-glpi.conf.example /etc/backup-glpi.conf
 ```
 
-### 3. Edite o Arquivo de Configuração
-Abra o arquivo de configuração para edição com o comando:
+### 3. Edit the Configuration File
+Open the configuration file for editing with the command:
 
 ```bash
 sudo nano /etc/backup-glpi.conf
 ```
 
-### 4. Ajuste as configurações conforme necessário
+### 4. Adjust the settings as needed
 
-
-Diretórios
+Directory Paths
 ```bash
 GLPI_DIR="/var/www/glpi"
 GLPI_CONFIG_DIR="/etc/glpi"
@@ -68,39 +67,39 @@ GLPI_DATA_DIR="/var/lib/glpi"
 GLPI_LOG_DIR="/var/log/glpi"
 ```
 
-Banco de Dados
+**Database**
 ```bash
 DB_HOST="localhost"
 DB_NAME="glpi"
-DB_USER="seuusuario"
-DB_PASS="suasenha"
+DB_USER="user"
+DB_PASS="password"
 ```
 Backup
 ```bash
 BACKUP_RETENTION_DAYS=5
 ```
 
-Certifique-se de que todos os caminhos e credenciais estão corretos e correspondem à sua configuração do GLPI.
+Ensure that all paths and credentials are correct and match your GLPI configuration.
 
-## Permissões
-Certifique-se de que o script e os arquivos de configuração tenham as permissões corretas:
+## Permissions
+Ensure that the script and configuration files have the correct permissions:
 
-### 1. Defina Permissões no Script
-Conceda permissões de execução ao script com o comando:
+### 1. Set Permissions on the Script
+Grant execution permissions to the script with the command:
 
 ```bash
 sudo chmod +x backup-glpi.sh
 ```
 
-### 2. Defina Permissões no Arquivo de Configuração
-Certifique-se de que o arquivo de configuração seja legível apenas pelo usuário root e pelo script com o comando:
+### 2. Set Permissions on the Configuration File
+Ensure that the configuration file is readable only by the root user and the script with the command:
 
 ```bash
 sudo chmod 640 /etc/backup-glpi.conf
 ```
 
-### 3. Configure Permissões de Diretórios
-Certifique-se de que o diretório de backup tenha as permissões corretas para que o script possa escrever com os seguintes comandos:
+### 3. Configure Directory Permissions
+Ensure that the backup directory has the correct permissions for the script to write with the following commands:
 
 ```bash
 sudo chown backupuser:backupuser /var/backups/glpi
@@ -108,46 +107,49 @@ sudo chmod 750 /var/backups/glpi
 ```
 ## Executar o Script Manualmente
 
-Para executar o script manualmente, use o comando:
+To run the script manually, use the command:
 
 ```bash
 sudo ./backup-glpi.sh
 ```
 
-O script criará um backup do banco de dados e dos arquivos do GLPI. O progresso e os resultados serão registrados em **/var/log/glpi/backup.log**
+The script will create a backup of the GLPI database and files. The progress and results will be logged in **/var/log/glpi/backup.log**
 
-## Agendar Backups Automáticos
+## Schedule Automatic Backups
 
-Para agendar o script para ser executado automaticamente, utilize o cron. Abra o crontab para edição com o comando:
+To schedule the script to run automatically, use cron. Open the crontab for editing with the command:
 
 ```bash
 sudo crontab -e
 ```
 
-Adicione a seguinte linha para executar o script diariamente às 2 AM:
+Add the following line to run the script daily at 2 AM:
 
 ```bash
 0 2 * * * /var/backups/glpi/backup-glpi.sh
 ```
 
-Isso garante que o backup seja realizado automaticamente todos os dias.
+This ensures that the backup is performed automatically every day.
 
-## Detalhes do Script
-- **Criação de Backup:** O script cria um dump do banco de dados GLPI e o comprime. Também arquiva os arquivos do GLPI, excluindo os diretórios de backup e upload para evitar duplicidade.
-- **Arquivo de Log:** As operações do script são registradas em **/var/log/glpi/backup.log**. Verifique este arquivo para monitorar o status dos backups e para depuração em caso de problemas.
-- **Tratamento de Erros:** Se qualquer operação falhar, o script sairá e registrará um erro no log. Isso inclui a falha na criação de backups, problemas com permissões e falhas na configuração.
+## Script Details
+- **Backup Creation:** The script creates a dump of the GLPI database and compresses it. It also archives the GLPI files, excluding the backup and upload directories to avoid duplication.
+- **Log File:** The script operations are logged in **/var/log/glpi/backup.log**. Check this file to monitor backup status and for troubleshooting any issues.
+- **Error Handling:** If any operation fails, the script will exit and log an error. This includes failures in backup creation, permission issues, and configuration errors.
 
-## Solução de Problemas
+## Troubleshooting
 
-Se você encontrar problemas ao usar o script, verifique o seguinte:
-- **Permissões:** Certifique-se de que o script e os diretórios de backup têm as permissões corretas.
-- **Credenciais do Banco de Dados:** Verifique se as credenciais do banco de dados estão corretas no arquivo de configuração.
-- **Espaço em Disco:** Garanta que há espaço suficiente em disco para armazenar os backups.
-- **Logs:** Consulte o arquivo de log **/var/log/glpi/backup.log** para detalhes sobre quaisquer erros ou problemas encontrados.
+If you encounter issues using the script, check the following:
+- **Permissions:** Ensure that the script and backup directories have the correct permissions.
+- **Database Credentials:** Verify that the database credentials are correct in the configuration file.
+- **Disk Space:** Ensure there is sufficient disk space to store backups.
+- **Logs:** Refer to the log file **/var/log/glpi/backup.log** for details on any errors or issues encountered.
 
-## Licença
+## License
 
-Este script está licenciado sob a Licença Pública Geral GNU v3.0. Veja o arquivo **LICENSE** para mais detalhes.
+[![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
+
+This software is licensed under the terms of GPLv2+, see LICENSE file for
+details.
 
 ## Contato
 Para quaisquer problemas ou perguntas, por favor, abra uma issue em GitHub Issues ou entre em contato por e-mail: allanlopesprado@hotmail.com
