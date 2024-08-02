@@ -150,7 +150,3 @@ If you encounter issues using the script, check the following:
 
 This software is licensed under the terms of GPLv2+, see LICENSE file for
 details.
-
-## Contato
-Para quaisquer problemas ou perguntas, por favor, abra uma issue em GitHub Issues ou entre em contato por e-mail: allanlopesprado@hotmail.com
-
