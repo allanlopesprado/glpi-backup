@@ -2,7 +2,7 @@
 
 # -------------------------------------------------------------------------
 # @Name: backup-glpi.sh
-# @Version: 2.2.0
+# @Version: 2.2.1
 # @Date: 2024-08-01
 # @Author: Allan Lopes Prado
 # @License: GNU General Public License v2.0
@@ -42,7 +42,7 @@ if [ "$(id -u)" -ne "0" ]; then
 fi
 
 # VARIABLES
-GLPI_DIR="/var/www/glpi"
+GLPI_DIR="/var/www/html/glpi"
 GLPI_CONFIG_DIR="/etc/glpi"
 GLPI_DATA_DIR="/var/lib/glpi"
 GLPI_LOG_DIR="/var/log/glpi"
@@ -79,9 +79,11 @@ GLPI_BACKUP_NAME="glpi-${GLPI_VERSION}-${GLPI_DATE}"
         exit 1
     fi
 
-    # Backup files excluding certain directories
+    # Backup files including necessary directories
     cd "$GLPI_DIR"
-    if tar --exclude='files/_dumps/*' --exclude='files/_uploads/*' -zcf "${GLPI_DATA_DIR}/_uploads/${GLPI_BACKUP_NAME}.files.tar.gz" files/; then
+    if tar --exclude='files/_dumps/*' --exclude='files/_uploads/*' \
+        -zcf "${GLPI_DATA_DIR}/_uploads/${GLPI_BACKUP_NAME}.files.tar.gz" \
+        "$GLPI_DIR" "$CONFIG_DIR" "$VAR_DIR" "$LOG_DIR"; then
         echo "Files backup completed successfully!"
     else
         echo "Files backup failed!"
