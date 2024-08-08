@@ -39,7 +39,7 @@ sudo usermod -aG sudo backupuser
 Clone the repository to your server with the command:
 
 ```bash
-git clone https://github.com/allanlopesprado/backup-glpi.git
+git clone https://github.com/allanlopesprado/glpi-backup.git
 cd backup-glpi
 ```
 
@@ -47,14 +47,14 @@ cd backup-glpi
 Copy the example configuration file to the appropriate directory with the command:
 
 ```bash
-sudo cp backup-glpi.conf /etc/backup-glpi.conf
+sudo cp glpi0backup.conf /etc/glpi-backup.conf
 ```
 
 ### 3. Edit the Configuration File
 Open the configuration file for editing with the command:
 
 ```bash
-sudo nano /etc/backup-glpi.conf
+sudo nano /etc/glpi-backup.conf
 ```
 
 ### 4. Adjust the settings as needed
@@ -95,7 +95,7 @@ sudo chmod +x backup-glpi.sh
 Ensure that the configuration file is readable only by the root user and the script with the command:
 
 ```bash
-sudo chmod 640 /etc/backup-glpi.conf
+sudo chmod 640 /etc/glpi-backup.conf
 ```
 
 ### 3. Configure Directory Permissions
@@ -110,7 +110,7 @@ sudo chmod 750 /var/backups/glpi
 To run the script manually, use the command:
 
 ```bash
-sudo ./backup-glpi.sh
+sudo ./glpi-backup.conf
 ```
 
 The script will create a backup of the GLPI database and files. The progress and results will be logged in **/var/log/glpi/backup.log**
@@ -126,7 +126,7 @@ sudo crontab -e
 Add the following line to run the script daily at 2 AM:
 
 ```bash
-0 2 * * * /var/backups/glpi/backup-glpi.sh
+0 2 * * * /var/backups/glpi/glpi-backup.conf
 ```
 
 This ensures that the backup is performed automatically every day.
