@@ -47,7 +47,7 @@ cd glpi-backup
 Copy the example configuration file to the appropriate directory with the command:
 
 ```bash
-sudo cp glpi0backup.conf /etc/glpi-backup.conf
+sudo cp glpi-backup.conf /etc/glpi-backup.conf
 ```
 
 ### 3. Edit the Configuration File
