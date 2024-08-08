@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # -------------------------------------------------------------------------
-# @Name: Backup-GLPI.sh
+# @Name: backup-glpi.sh
 # @Version: 2.2.0
 # @Date: 2024-08-01
 # @Author: Allan Lopes Prado
