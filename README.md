@@ -40,7 +40,7 @@ Clone the repository to your server with the command:
 
 ```bash
 git clone https://github.com/allanlopesprado/glpi-backup.git
-cd backup-glpi
+cd glpi-backup
 ```
 
 ### 2. Create the Configuration File
@@ -88,7 +88,7 @@ Ensure that the script and configuration files have the correct permissions:
 Grant execution permissions to the script with the command:
 
 ```bash
-sudo chmod +x backup-glpi.sh
+sudo chmod +x glpi-backup.sh
 ```
 
 ### 2. Set Permissions on the Configuration File
