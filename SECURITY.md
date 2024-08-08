@@ -5,7 +5,6 @@
 If you found a security issue, please contact us by:
 
 - the [github security advisories page](https://github.com/allanlopesprado/backup-glpi/security/advisories)
-- a mail to \[glpi-security AT ow2.org\]
 
 You should provide us all details about the issue and the way to reproduce it.
 You may also provide a script that can be used to check the issue exists.
