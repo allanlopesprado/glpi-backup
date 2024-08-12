@@ -14,19 +14,19 @@ Before using the backup script, ensure you have the following:
 
 For added security, **do not run the script as root**. Instead, create a dedicated user to perform the backups.
 
-### 1. Create a new user (replace `backupuser` with your desired name):
+**1. Create a new user (replace `backupuser` with your desired name):**
 
 ```bash
 sudo adduser backupuser
 ```
 
-### 2. Grant permissions to the new user to access the necessary directories:
+**2. Grant permissions to the new user to access the necessary directories:**
 
 ```bash
 sudo chown -R backupuser:backupuser /var/www/glpi /etc/glpi /var/lib/glpi /var/log/glpi
 ```
 
-### 3. Add the user to the sudo group to allow the execution of necessary commands:
+**3. Add the user to the sudo group to allow the execution of necessary commands:**
 
 ```bash
 sudo usermod -aG sudo backupuser
@@ -34,7 +34,7 @@ sudo usermod -aG sudo backupuser
 
 ## Configuration
 
-### 1. Clone the Repository
+**1. Clone the Repository**
 
 Clone the repository to your server with the command:
 
@@ -43,21 +43,21 @@ git clone https://github.com/allanlopesprado/glpi-backup.git
 cd glpi-backup
 ```
 
-### 2. Create the Configuration File
+**2. Create the Configuration File**
 Copy the example configuration file to the appropriate directory with the command:
 
 ```bash
 sudo cp glpi-backup.conf /etc/glpi-backup.conf
 ```
 
-### 3. Edit the Configuration File
+**3. Edit the Configuration File**
 Open the configuration file for editing with the command:
 
 ```bash
 sudo nano /etc/glpi-backup.conf
 ```
 
-### 4. Adjust the settings as needed
+**4. Adjust the settings as needed**
 
 Directory Paths
 ```bash
@@ -84,21 +84,21 @@ Ensure that all paths and credentials are correct and match your GLPI configurat
 ## Permissions
 Ensure that the script and configuration files have the correct permissions:
 
-### 1. Set Permissions on the Script
+**1. Set Permissions on the Script**
 Grant execution permissions to the script with the command:
 
 ```bash
 sudo chmod +x glpi-backup.sh
 ```
 
-### 2. Set Permissions on the Configuration File
+**2. Set Permissions on the Configuration File**
 Ensure that the configuration file is readable only by the root user and the script with the command:
 
 ```bash
 sudo chmod 640 /etc/glpi-backup.conf
 ```
 
-### 3. Configure Directory Permissions
+**3. Configure Directory Permissions**
 Ensure that the backup directory has the correct permissions for the script to write with the following commands:
 
 ```bash
