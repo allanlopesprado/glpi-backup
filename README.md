@@ -40,24 +40,20 @@ Clone the repository to your server with the command:
 
 ```bash
 git clone https://github.com/allanlopesprado/glpi-backup.git
-cd glpi-backup
 ```
 
 **2. Create the Configuration File**
 Copy the example configuration file to the appropriate directory with the command:
 
 ```bash
-sudo cp glpi-backup.* /etc/
-cd ..
-rm -rf glpi-backup/
-cd /etc/
+cd glpi-backup /var/
 ```
 
 **3. Edit the Configuration File**
 Open the configuration file for editing with the command:
 
 ```bash
-sudo nano /etc/glpi-backup.conf
+sudo nano /var/glpi-backup/glpi-backup.conf
 ```
 
 **4. Adjust the settings as needed**
@@ -90,14 +86,14 @@ Ensure that the script and configuration files have the correct permissions:
 Grant execution permissions to the script with the command:
 
 ```bash
-sudo chmod +x /etc/glpi-backup.sh
+sudo chmod +x /var/glpi-backup/glpi-backup.sh
 ```
 
 **2. Set Permissions on the Configuration File**
 Ensure that the configuration file is readable only by the root user and the script with the command:
 
 ```bash
-sudo chmod 640 /etc/glpi-backup.sh
+sudo chmod 640 /var/glpi-backup/glpi-backup.sh
 ```
 
 **3. Configure Directory Permissions**
@@ -105,15 +101,15 @@ sudo chmod 640 /etc/glpi-backup.sh
 Make sure to create the backup directory and that it has the correct permissions for the script to write with the following commands:
 
 ```bash
-mkdir /var/backups/glpi
-sudo chown backupuser:backupuser /var/backups/glpi
-sudo chmod 750 /var/backups/glpi
+sudo chown backupuser:backupuser /var/glpi-backup/
+sudo chmod 750 /var/glpi-backup/
 ```
 ## Executar o Script Manualmente
 
 To run the script manually, use the command:
 
 ```bash
+cd /var/glpi-backup/
 sudo ./glpi-backup.sh
 ```
 
@@ -130,7 +126,7 @@ sudo crontab -e
 Add the following line to run the script daily at 2 AM:
 
 ```bash
-0 2 * * * /var/backups/glpi/glpi-backup.sh
+0 2 * * * /var/glpi-backup/glpi-backup.sh
 ```
 
 This ensures that the backup is performed automatically every day.
