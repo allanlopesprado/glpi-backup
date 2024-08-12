@@ -56,7 +56,7 @@ rm -rf glpi-backup/
 Open the configuration file for editing with the command:
 
 ```bash
-sudo nano /etc/glpi-backup.config
+sudo nano /etc/glpi-backup.conf
 ```
 
 **4. Adjust the settings as needed**
