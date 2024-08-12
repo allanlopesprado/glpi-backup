@@ -56,8 +56,8 @@ mkdir -p "$GLPI_DUMPS"
 mkdir -p "$GLPI_LOG_DIR"
 
 # CREDENTIALS DATABASE
-GLPI_DBUSER=$(grep "dbuser" "$GLPI_DBCONFIG" | cut -d "'" -f 2)
-GLPI_DBPASS=$(grep "dbpassword" "$GLPI_DBCONFIG" | cut -d "'" -f 2)
+GLPI_DBUSER=$(grep "DB_USER" "$GLPI_DBCONFIG" | cut -d "=" -f 2 | tr -d '[:space:]\"')
+GLPI_DBPASS=$(grep "DB_PASS" "$GLPI_DBCONFIG" | cut -d "=" -f 2 | tr -d '[:space:]\"')
 
 # GLPI VERSION
 GLPI_VERSION=$(mysql -u"$GLPI_DBUSER" -p"$GLPI_DBPASS" -D glpi -N -B -e "SELECT value FROM glpi_configs WHERE name = 'version';")
