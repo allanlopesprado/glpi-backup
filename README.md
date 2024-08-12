@@ -82,21 +82,14 @@ Ensure that all paths and credentials are correct and match your GLPI configurat
 ## Permissions
 Ensure that the script and configuration files have the correct permissions:
 
-**1. Set Permissions on the Script**
-Grant execution permissions to the script with the command:
-
-```bash
-sudo chmod +x /var/glpi-backup/glpi-backup.sh
-```
-
-**2. Set Permissions on the Configuration File**
+**1. Set Permissions on the Configuration File**
 Ensure that the configuration file is readable only by the root user and the script with the command:
 
 ```bash
 sudo chmod 640 /var/glpi-backup/glpi-backup.sh
 ```
 
-**3. Configure Directory Permissions**
+**2. Configure Directory Permissions**
 
 Make sure to create the backup directory and that it has the correct permissions for the script to write with the following commands:
 
@@ -104,6 +97,14 @@ Make sure to create the backup directory and that it has the correct permissions
 sudo chown backupuser:backupuser /var/glpi-backup/
 sudo chmod 750 /var/glpi-backup/
 ```
+
+**3. Set Permissions on the Script**
+Grant execution permissions to the script with the command:
+
+```bash
+sudo chmod +x /var/glpi-backup/glpi-backup.sh
+```
+
 ## Executar o Script Manualmente
 
 To run the script manually, use the command:
