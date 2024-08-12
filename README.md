@@ -50,6 +50,7 @@ Copy the example configuration file to the appropriate directory with the comman
 sudo cp glpi-backup.* /etc/
 cd ..
 rm -rf glpi-backup/
+cd /etc/
 ```
 
 **3. Edit the Configuration File**
@@ -90,7 +91,7 @@ Ensure that the script and configuration files have the correct permissions:
 Grant execution permissions to the script with the command:
 
 ```bash
-sudo chmod +x glpi-backup.sh
+sudo chmod +x /etc/glpi-backup.sh
 ```
 
 **2. Set Permissions on the Configuration File**
@@ -114,7 +115,7 @@ sudo chmod 750 /var/backups/glpi
 To run the script manually, use the command:
 
 ```bash
-sudo ./glpi-backup.sh
+sudo ./etc/glpi-backup.sh
 ```
 
 The script will create a backup of the GLPI database and files. The progress and results will be logged in **/var/log/glpi/backup.log**
