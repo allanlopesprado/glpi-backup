@@ -133,7 +133,7 @@ Add the following line to run the script daily at 2 AM:
 This ensures that the backup is performed automatically every day.
 
 ## Script Details
-- **Backup Creation:** The script creates a dump of the GLPI database and compresses it. It also archives the GLPI files, excluding the backup and upload directories to avoid duplication. The files are stored in the directory: **/var/lib/glpi/_dumps**.
+- **Backup Creation:** The script creates a dump of the GLPI database and compresses it. It also archives the GLPI files, excluding the backup and upload directories to avoid duplication. The files are stored in the directory: **/var/lib/glpi/_dumps and /var/lib/glpi/_uploads**.
 - **Log File:** The script operations are logged in **/var/log/glpi/backup.log**. Check this file to monitor backup status and for troubleshooting any issues.
 - **Error Handling:** If any operation fails, the script will exit and log an error. This includes failures in backup creation, permission issues, and configuration errors.
 
