@@ -83,7 +83,7 @@ echo "Starting backup process at $GLPI_DATE..."
     find "$GLPI_DUMPS" -type f -mtime +5 -exec rm -f {} \;
     find "${GLPI_DATA_DIR}/_uploads" -type f -mtime +5 -exec rm -f {} \;
 
-    echo "Backup process completed successfully!"
+    echo "Backup process completed successfully! The backup files are located in /var/lib/glpi/_dumps."
 } >> "$GLPI_LOGFILE" 2>&1
 
 # Setup log rotation
