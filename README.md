@@ -99,9 +99,10 @@ sudo chmod 640 /etc/glpi-backup.sh
 ```
 
 **3. Configure Directory Permissions**
-Ensure that the backup directory has the correct permissions for the script to write with the following commands:
+Make sure to create the backup directory and that it has the correct permissions for the script to write with the following commands:
 
 ```bash
+mkdir /var/backups/glpi
 sudo chown backupuser:backupuser /var/backups/glpi
 sudo chmod 750 /var/backups/glpi
 ```
