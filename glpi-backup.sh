@@ -27,6 +27,7 @@ if [ "$(id -u)" -ne "0" ]; then
 fi
 
 # Load configuration file
+echo "Loading configuration from /etc/glpi-backup.conf..."
 source /etc/glpi-backup.conf
 
 # VARIABLES
@@ -35,6 +36,7 @@ GLPI_LOGFILE="${GLPI_LOG_DIR}/backup.log"
 LOG_ROTATE_CONF="/etc/logrotate.d/glpi-backup"
 
 # Ensure GLPI directories exist
+echo "Ensuring GLPI directories exist..."
 mkdir -p "$GLPI_DUMPS"
 mkdir -p "$GLPI_LOG_DIR"
 
@@ -44,6 +46,7 @@ GLPI_DBPASS="$DB_PASS"
 GLPI_DBNAME="$DB_NAME"
 
 # GLPI VERSION
+echo "Retrieving GLPI version..."
 GLPI_VERSION=$(mysql -u"$GLPI_DBUSER" -p"$GLPI_DBPASS" -D "$GLPI_DBNAME" -N -B -e "SELECT value FROM glpi_configs WHERE name = 'version';")
 
 # VARIABLES BACKUP
@@ -51,10 +54,11 @@ GLPI_DATE=$(date +%Y-%m-%d-%H-%M)
 GLPI_BACKUP_NAME="glpi-${GLPI_VERSION}-${GLPI_DATE}"
 
 # Start backup process
+echo "Starting backup process at $GLPI_DATE..."
+
 {
-    echo "Starting backup at $GLPI_DATE..."
-    
     # Backup database
+    echo "Backing up the database..."
     if mysqldump -u "$GLPI_DBUSER" -p"$GLPI_DBPASS" "$GLPI_DBNAME" | gzip > "${GLPI_DUMPS}/${GLPI_BACKUP_NAME}.sql.gz"; then
         echo "Database backup completed successfully!"
     else
@@ -63,6 +67,7 @@ GLPI_BACKUP_NAME="glpi-${GLPI_VERSION}-${GLPI_DATE}"
     fi
 
     # Backup files including necessary directories
+    echo "Backing up files..."
     cd "$GLPI_DIR"
     if tar --exclude='files/_dumps/*' --exclude='files/_uploads/*' \
         -zcf "${GLPI_DATA_DIR}/_uploads/${GLPI_BACKUP_NAME}.files.tar.gz" \
@@ -74,6 +79,7 @@ GLPI_BACKUP_NAME="glpi-${GLPI_VERSION}-${GLPI_DATE}"
     fi
 
     # Remove old backups
+    echo "Removing old backups..."
     find "$GLPI_DUMPS" -type f -mtime +5 -exec rm -f {} \;
     find "${GLPI_DATA_DIR}/_uploads" -type f -mtime +5 -exec rm -f {} \;
 
@@ -81,6 +87,7 @@ GLPI_BACKUP_NAME="glpi-${GLPI_VERSION}-${GLPI_DATE}"
 } >> "$GLPI_LOGFILE" 2>&1
 
 # Setup log rotation
+echo "Setting up log rotation..."
 if [ ! -f "$LOG_ROTATE_CONF" ]; then
     cat <<EOL > "$LOG_ROTATE_CONF"
 $GLPI_LOGFILE {
@@ -95,4 +102,5 @@ EOL
     echo "Log rotation configuration added for $GLPI_LOGFILE"
 fi
 
+echo "Script execution completed successfully!"
 exit 0
