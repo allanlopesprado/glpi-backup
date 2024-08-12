@@ -48,6 +48,8 @@ Copy the example configuration file to the appropriate directory with the comman
 
 ```bash
 sudo cp glpi-backup.* /etc/
+cd ..
+rm -rf glpi-backup
 ```
 
 **3. Edit the Configuration File**
