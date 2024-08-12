@@ -102,5 +102,5 @@ EOL
     echo "Log rotation configuration added for $GLPI_LOGFILE"
 fi
 
-echo "Backup process completed successfully! The backup files are located in /var/lib/glpi/_dumps."
+echo "Backup process completed successfully! The backup files are located in /var/lib/glpi/_dumps and /var/lib/glpi/_uploads."
 exit 0
