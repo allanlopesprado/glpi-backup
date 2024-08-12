@@ -115,7 +115,7 @@ sudo chmod 750 /var/backups/glpi
 To run the script manually, use the command:
 
 ```bash
-sudo ./etc/glpi-backup.sh
+sudo ./glpi-backup.sh
 ```
 
 The script will create a backup of the GLPI database and files. The progress and results will be logged in **/var/log/glpi/backup.log**
