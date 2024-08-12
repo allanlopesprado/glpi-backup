@@ -23,7 +23,7 @@ sudo adduser backupuser
 **2. Grant permissions to the new user to access the necessary directories:**
 
 ```bash
-sudo chown -R backupuser:backupuser /var/www/glpi /etc/glpi /var/lib/glpi /var/log/glpi
+sudo chown -R backupuser:backupuser /var/www/html/glpi /etc/glpi /var/lib/glpi /var/log/glpi
 ```
 
 **3. Add the user to the sudo group to allow the execution of necessary commands:**
