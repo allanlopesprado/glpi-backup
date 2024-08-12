@@ -65,7 +65,6 @@ sudo nano /etc/glpi-backup.conf
 Directory Paths
 ```bash
 GLPI_DIR="/var/www/glpi"
-GLPI_CONFIG_DIR="/etc/glpi"
 GLPI_DATA_DIR="/var/lib/glpi"
 GLPI_LOG_DIR="/var/log/glpi"
 ```
