@@ -109,7 +109,6 @@ sudo chmod 750 /var/glpi-backup/
 To run the script manually, use the command:
 
 ```bash
-cd /var/glpi-backup/
 sudo ./glpi-backup.sh
 ```
 
