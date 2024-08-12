@@ -95,7 +95,7 @@ sudo chmod +x glpi-backup.sh
 Ensure that the configuration file is readable only by the root user and the script with the command:
 
 ```bash
-sudo chmod 640 /etc/glpi-backup.conf
+sudo chmod 640 /etc/glpi-backup.sh
 ```
 
 **3. Configure Directory Permissions**
@@ -110,7 +110,7 @@ sudo chmod 750 /var/backups/glpi
 To run the script manually, use the command:
 
 ```bash
-sudo ./glpi-backup.conf
+sudo ./glpi-backup.sh
 ```
 
 The script will create a backup of the GLPI database and files. The progress and results will be logged in **/var/log/glpi/backup.log**
@@ -126,7 +126,7 @@ sudo crontab -e
 Add the following line to run the script daily at 2 AM:
 
 ```bash
-0 2 * * * /var/backups/glpi/glpi-backup.conf
+0 2 * * * /var/backups/glpi/glpi-backup.sh
 ```
 
 This ensures that the backup is performed automatically every day.
