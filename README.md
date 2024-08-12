@@ -42,11 +42,11 @@ Clone the repository to your server with the command:
 git clone https://github.com/allanlopesprado/glpi-backup.git
 ```
 
-**2. Create the Configuration File**
-Copy the example configuration file to the appropriate directory with the command:
+**2. Move the Configuration File**  
+Move the configuration file to the appropriate directory with the command:
 
 ```bash
-cd glpi-backup /var/
+mv glpi-backup /var/
 ```
 
 **3. Edit the Configuration File**
