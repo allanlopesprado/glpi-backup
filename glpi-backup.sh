@@ -70,7 +70,7 @@ echo "Starting backup process at $GLPI_DATE..."
     echo "Backing up files..."
     cd "$GLPI_DIR"
     if tar --exclude='files/_dumps/*' --exclude='files/_uploads/*' \
-        -zcf "${GLPI_DATA_DIR}/_uploads/${GLPI_BACKUP_NAME}.files.tar.gz" \
+        -zcf "${GLPI_DATA_DIR}/_dumps/${GLPI_BACKUP_NAME}.files.tar.gz" \
         "$GLPI_DIR"; then
         echo "Files backup completed successfully!"
     else
@@ -102,5 +102,5 @@ EOL
     echo "Log rotation configuration added for $GLPI_LOGFILE"
 fi
 
-echo "Backup process completed successfully! The backup files are located in /var/lib/glpi/_dumps and /var/lib/glpi/_uploads."
+echo "Backup process completed successfully! The backup files are located in $GLPI_DUMPS."
 exit 0
