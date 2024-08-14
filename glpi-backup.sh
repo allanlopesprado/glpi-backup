@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # -------------------------------------------------------------------------
-# @Name: glpi-install.sh
+# @Name: glpi-backup.sh
 # @Version: 1.0.0
 # @Date: 2024-08-08
 # @Author: Allan Lopes Prado
@@ -15,7 +15,7 @@
 # the Free Software Foundation, either version 2 of the License, or
 # (at your option) any later version.
 #
-# glpi-install.sh is distributed in the hope that it will be useful,
+# glpi-backup.sh is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU General Public License for more details.
