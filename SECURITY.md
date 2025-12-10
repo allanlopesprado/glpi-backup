@@ -4,19 +4,18 @@
 
 If you found a security issue, please contact us by:
 
-- the [github security advisories page](https://github.com/allanlopesprado/backup-glpi/security/advisories)
+- the [github security advisories page](https://github.com/allanlopesprado/glpi-backup/security/advisories)
 
 You should provide us all details about the issue and the way to reproduce it.
 You may also provide a script that can be used to check the issue exists.
 
-Once the report will be handled, and if the issue is not yet fixed (or in progress)
-we'll add it to the GitHub security tab, and add you as observer. Meanwhile,
-you will reserve a CVE for the issue.
-
-Thank you for improving the security of glpi-agent.
+Once the report is handled, and if the issue is not yet fixed, we will work on a solution.
 
 ## Supported Versions
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 1.x     | :heavy_check_mark: |
+Since version 2.0.0 introduced significant security improvements, older versions are deprecated.
+
+| Version | Supported          | Notes |
+| ------- | ------------------ | ----- |
+| 2.x     | :white_check_mark: | Current Secure Release |
+| 1.x     | :x:                | Deprecated (Insecure credential handling) |
