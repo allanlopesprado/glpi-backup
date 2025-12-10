@@ -2,7 +2,7 @@
 
 # -------------------------------------------------------------------------
 # @Name: glpi-backup.sh
-# @Version: 1.2.0
+# @Version: 2.0.0
 # @Date: 2024-08-08
 # @Author: Allan Lopes Prado
 # @License: GNU General Public License v2.0
